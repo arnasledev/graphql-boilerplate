@@ -1,0 +1,49 @@
+directive @isAuth on FIELD_DEFINITION
+
+scalar CustomScalar # note for myself how to use it.
+scalar DateTime
+scalar UUID
+
+# enums must be used as scalars for apollo server using typeDefs
+# for e.: https://stackoverflow.com/a/61144969/9521977
+scalar TypeActionEnum
+
+type Query {
+    myUser: User
+}
+
+type Mutation {
+    smsCode(phone: String!): SmsCodePayload,
+    login(phone: String!, smsCode: Int!): AuthPayload,
+    revokeToken(refreshToken: String!): RevokeTokenPayload,
+    updateRoom(id: UUID!): Room,
+    createRoom(id: UUID!): Room,
+    updateChat(id: UUID!): Chat,
+    createChat(id: UUID!): Chat,
+}
+
+type SmsCodePayload {
+    error: String,
+    timeLeft: String!
+}
+
+type AuthPayload {
+    error: String,
+    accessToken: String!,
+    refreshToken: String!
+}
+
+type RevokeTokenPayload {
+    error: String,
+    accessToken: String!,
+}
+
+type Room {
+    id: UUID!,
+    title: String!
+}
+
+type Room {
+    id: UUID!,
+    title: String!
+}

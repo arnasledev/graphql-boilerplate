@@ -1,0 +1,31 @@
+version: "2.1"
+
+services:
+  app:
+    container_name: node
+    build:
+      context: .
+      dockerfile: entry.dockerfile
+    ports:
+      - '${API_PORT}:${API_PORT}'
+    volumes:
+      - ./src:/usr/src/app/src
+      - /usr/src/app/lib
+      - /usr/src/app/node_modules
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASS: root
+    links:
+      - mysql
+  mysql:
+    image: mysql:5.7
+    logging:
+      driver: 'none'
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - '3306:3306'
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
